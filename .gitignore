@@ -1,5 +1,5 @@
-/files/*
-*/__init__.py
+scraper/files/*
+__init__.py
 __pycache__
 scrapy.cfg
-scrapy/q
+scraper/q
