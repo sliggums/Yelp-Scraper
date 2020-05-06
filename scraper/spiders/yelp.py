@@ -11,7 +11,7 @@ SEARCH_LINK = "https://www.yelp.com/user_details_reviews_self?userid=BUeueHeX3mz
 NEXT_BUTTON_XPATH = "//a[@class='u-decoration-none next pagination-links_anchor']/@href"
 REVIEW_XPATH = "//div[@class='review']/@data-review-id"
 TEXT_XPATH = "//div[@data-review-id='%s']/div/div/p/text()"
-PHOTO_XPATH = "//div[@data-review-id='%s']/div/div/ul/li/div/img/@src"
+PHOTO_XPATH = "//div[@data-review-id='%s']/div/div/ul/li/div/img/@srcset"
 RESTAURANT_XPATH = "//div[@data-review-id='%s']/div/div/div/div/a/span/text()"
 
 class QuotesSpider(Spider):
@@ -25,7 +25,7 @@ class QuotesSpider(Spider):
     for review_id in response.xpath(REVIEW_XPATH).extract():
       restaurant_name = response.xpath(RESTAURANT_XPATH % review_id).extract_first()
       text = response.xpath(TEXT_XPATH % review_id).extract_first()
-      photo_list = response.xpath(PHOTO_XPATH % review_id).extract()
+      photo_list = [ "/".join(photo.split(" ")[0].split("/")[:-1]) + "/1000s.jpg" for photo in response.xpath(PHOTO_XPATH % review_id).extract() ]
       item = RestaurantItem()
       item['text'] = text
       item['name'] = restaurant_name
